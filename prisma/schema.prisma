@@ -10,18 +10,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id   Int @id @default(autoincrement())
-  email String @unique
+  id       Int    @id @default(autoincrement())
+  email    String @unique
   password String
 
   @@map("users")
 }
 
 model Categorie {
-  id Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String @unique
+  Test Test[]
 
   @@map("categories")
+}
+
+model Test {
+  id         Int       @id @default(autoincrement())
+  name       String
+  pdfUrl     String
+  Categorie  Categorie @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+  @@map("tests")
 }
