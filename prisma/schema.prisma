@@ -26,12 +26,53 @@ model Categorie {
   @@map("categories")
 }
 
+model Teacher {
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique
+  TeacherDiscipline TeacherDiscipline[]
+
+  @@map("teachers")
+}
+
+model Term {
+  id         Int          @id @default(autoincrement())
+  number     Int          @unique
+  Discipline Discipline[]
+
+  @@map("terms")
+}
+
+model Discipline {
+  id     Int    @id @default(autoincrement())
+  name   String @unique
+  termId Int
+
+  Term Term @relation(fields: [termId], references: [id])
+
+  @@map("disciplines")
+}
+
+model TeacherDiscipline {
+  id           Int @id @default(autoincrement())
+  teacherId    Int
+  disciplineId Int
+
+  Teacher Teacher @relation(fields: [teacherId], references: [id])
+
+  Test Test[]
+
+  @@map("teachersDisciplines")
+}
+
 model Test {
-  id         Int       @id @default(autoincrement())
-  name       String
-  pdfUrl     String
-  Categorie  Categorie @relation(fields: [categoryId], references: [id])
-  categoryId Int
+  id                  Int    @id @default(autoincrement())
+  name                String
+  pdfUrl              String
+  categoryId          Int
+  teacherDisciplineId Int
+
+  Categorie         Categorie         @relation(fields: [categoryId], references: [id])
+  TeacherDiscipline TeacherDiscipline @relation(fields: [teacherDisciplineId], references: [id])
 
   @@map("tests")
 }
