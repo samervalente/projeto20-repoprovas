@@ -14,7 +14,7 @@ export default function errorHandler(error: IError, req: Request, res: Response,
         case "conflict": return res.status(409).send(message)
         case "invalid_body": return res.status(422).send(message)
     }
-
-    return res.sendStatus(500)
+    console.log(error)
+    return res.status(500).send(error)
 }
 

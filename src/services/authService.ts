@@ -14,7 +14,7 @@ export async function getUser(email: string){
 export async function registerUser(userData: authRepository.AuthDataType){
     const {password} = userData
     userData.password = bcrypt.hashSync(password, 10)
-
+    
     await authRepository.insertUser(userData)
 }
 
