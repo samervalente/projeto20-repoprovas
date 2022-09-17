@@ -1,9 +1,9 @@
 import * as testRepository from "../repositories/testRepository";
+import testDataType from "../types/testType";
 
 
-
-export async function createTest(test: testRepository.TestDataType){
-    await testRepository.insertTest(test)
+export async function createTest(test: testDataType){
+    return await testRepository.insertTest(test)
 }
 
 export async function getTests(){

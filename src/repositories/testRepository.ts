@@ -1,11 +1,8 @@
-import { prisma, Test } from "@prisma/client";
 import client from "../database/prismaClient"
+import testDataType from "../types/testType"
 
-export type TestDataType = Omit<Test, "id">
-
-
-export  async function insertTest(test: TestDataType){
-    await client.test.create({data: test})
+export  async function insertTest(test: testDataType){
+   return await client.test.create({data: test})
 }
 
 export async function getTests(){

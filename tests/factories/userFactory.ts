@@ -1,12 +1,21 @@
 import {faker} from "@faker-js/faker"
 
-export default async function userFactory(){
-    const user = {
+interface IRegisterData{
+    email:string;
+    password:string;
+    confirmPassword:string;
+}
+
+
+
+
+export async function registerDataFactory(){
+    const user: IRegisterData = {
         email:faker.internet.email(),
-        password:faker.internet.password()
+        password:"123",
+        confirmPassword:"123"
     }
 
-   
-    
     return user
 }
+

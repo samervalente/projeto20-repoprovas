@@ -1,9 +1,14 @@
 import joi from "joi"
 
-const userSchema = joi.object({
+const registerSchema = joi.object({
     email: joi.string().email().required(),
     password: joi.string().required(),
     confirmPassword:joi.ref("password")
 })
 
-export default userSchema
+const loginSchema = joi.object({
+    email: joi.string().email().required(),
+    password: joi.string().required()
+})
+
+export {registerSchema, loginSchema}

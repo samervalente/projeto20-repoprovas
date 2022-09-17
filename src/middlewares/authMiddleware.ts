@@ -2,16 +2,26 @@ import * as authService from "../services/authService"
 import bcrypt from "bcrypt"
 import {Request, Response, NextFunction} from "express"
 
-export async function validateEmailExistence(req: Request, res: Response, next: NextFunction){
-    const {email} = req.body
+export async function validateRegisterData(req: Request, res: Response, next: NextFunction){
+    const {email, password, confirmPassword} = req.body
     const user = await authService.getUser(email)
+
+    if(confirmPassword === undefined){
+        throw {type:"invalid_body", message:"Confirm password is required"}
+    }
+
+    if(password !== confirmPassword){
+        throw {type:"bad_request", message:"Passwords are differents"}
+    }
 
     if(user){
         throw {type: "conflict", message:"Email already exists"}
     }
+
+    delete req.body.confirmPassword
     next()
 }
-export async function ValidateUserLoginData(req: Request, res: Response, next: NextFunction){
+export async function validateLoginData(req: Request, res: Response, next: NextFunction){
     const {email, password} = req.body
 
     const userDB = await authService.getUser(email)

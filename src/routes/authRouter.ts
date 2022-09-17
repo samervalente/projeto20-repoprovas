@@ -1,14 +1,14 @@
 import { Router } from "express";
 import schemaValidator from "../middlewares/schemaValidatorMiddleware";
-import userSchema from "../schemas/authSchema";
+import {registerSchema, loginSchema} from "../schemas/authSchema";
 
-import {validateEmailExistence, ValidateUserLoginData} from "../middlewares/authMiddleware"
+import {validateRegisterData, validateLoginData} from "../middlewares/authMiddleware"
 import {registerUser, loginUser} from "../controllers/authController"
 
 
 const routes = Router()
 
-routes.post("/signup", schemaValidator(userSchema), validateEmailExistence, registerUser )
-routes.post("/signin", schemaValidator(userSchema), ValidateUserLoginData, loginUser)
+routes.post("/signup", schemaValidator(registerSchema), validateRegisterData, registerUser )
+routes.post("/signin", schemaValidator(loginSchema), validateLoginData, loginUser)
 
 export default routes

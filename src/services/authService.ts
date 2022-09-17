@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import * as authRepository from "../repositories/authRepository"
 import dotenv from "dotenv"
+import userDataType from "../types/userType"
 
 dotenv.config()
 
@@ -11,11 +12,11 @@ export async function getUser(email: string){
 }
 
 
-export async function registerUser(userData: authRepository.AuthDataType){
+export async function registerUser(userData: userDataType){
     const {password} = userData
     userData.password = bcrypt.hashSync(password, 10)
     
-    await authRepository.insertUser(userData)
+    return await authRepository.insertUser(userData)
 }
 
 

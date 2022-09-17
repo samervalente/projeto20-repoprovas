@@ -1,8 +1,6 @@
 
-import { User } from "@prisma/client";
 import client from "../database/prismaClient"
-
-export type AuthDataType = Omit<User, 'id' | 'createdAt'>
+import userDataType from "../types/userType"
 
 export async function getUserById(id: number){
     const user = await client.user.findFirst({where: {id}})
@@ -15,6 +13,6 @@ export async function getUserByEmail(email: string){
 }
 
 
-export async function insertUser(userData: AuthDataType){
-    await client.user.create({data: userData})
+export async function insertUser(userData: userDataType){
+    return await client.user.create({data: userData})
 }
