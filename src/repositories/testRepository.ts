@@ -53,8 +53,29 @@ async function formatTestsOutput(terms: any, tests: any){
 
 
 export async function getTestsByInstructor(){
-    
-   const teachers = await client.teacher.findMany()
-   return teachers
 
+   const teachers: any = await client.teacher.findMany()
+   for(let i = 0; i < teachers.length; i ++){
+        teachers[i] = {...teachers[i], tests:[{Projetos:[], Práticas:[], Recuperações:[]}]}
+
+   }
+
+   const tests = await client.test.findMany({select:{name:true, pdfUrl:true, Categorie:{select:{name:true}}, TeacherDiscipline:{select:{disciplines:{select:{name:true}}, teacher:{select:{name:true, id:true}}}}}})
+   
+       for(let i = 0; i < teachers.length; i ++){
+            for(let j = 0; j < tests.length; j++){
+                if(teachers[i].id === tests[j].TeacherDiscipline.teacher.id){
+                    const test = tests[j]
+                    const {name, pdfUrl} = test
+                    const {name: categorieName} = test.Categorie
+                    const {name: discipline} = test.TeacherDiscipline.disciplines
+                   
+                    if(categorieName === "Projeto") teachers[i].tests[0].Projetos.push({name, pdfUrl, discipline})
+                    if(categorieName=== "Prática") teachers[i].tests[0].Práticas.push({name, pdfUrl, discipline})
+                    if(categorieName=== "Recuperação") teachers[i].tests[0].Recuperações.push({name, pdfUrl, discipline})
+                }
+            }
+       }
+
+       return teachers
 }
