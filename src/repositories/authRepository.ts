@@ -16,6 +16,5 @@ export async function getUserByEmail(email: string){
 
 
 export async function insertUser(userData: AuthDataType){
-    
     await client.user.create({data: userData})
 }
