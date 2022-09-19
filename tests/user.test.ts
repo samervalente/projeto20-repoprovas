@@ -1,10 +1,11 @@
 import app from "../src/app"
 import prisma from "../src/database/prismaClient"
 import supertest from "supertest"
-import {registerDataFactory} from "./factories/userFactory"
+import registerDataFactory from "./factories/userFactory"
 
 beforeEach(async () => {
-    await prisma.$executeRaw`TRUNCATE TABLE users RESTART IDENTITY;`
+    await prisma.$executeRaw` TRUNCATE TABLE users RESTART IDENTITY;
+    `
 })
 
 const agent = supertest(app)
@@ -23,25 +24,26 @@ describe("Testes para a rota de criação de usuário", () => {
 
     it("Retorna 409 caso exista um usuário com o mesmo email", async() => {
         const user = await registerDataFactory()
+
         const {status} =  await agent.post("/signup").send(user)
         expect(status).toEqual(201)
-
+      
         const result = await agent.post("/signup").send(user)
         expect(result.status).toEqual(409)
-    
     })
 })
 
 describe("Testes para a rota de logar o usuário", () => {
     it("Retorna 200 e o token corretamente caso os dados do usuário sejam válidos", async() => {
         const user = await registerDataFactory()
-        await agent.post("/signup").send(user)
+        const result = await agent.post("/signup").send(user)
+        expect(result.status).toEqual(201)
 
         const {email, password} = user
         const userLogin = {email, password}
-
-        const {status, body} =  await agent.post("/signin").send(userLogin)
        
+        const {status, body} = await agent.post("/signin").send(userLogin)
+    
         expect(status).toEqual(200)
         expect(body.sessionToken).not.toBeNull()
     })

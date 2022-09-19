@@ -6,11 +6,16 @@ import userDataType from "../types/userType"
 
 dotenv.config()
 
+
+export async function getUserById(userId: number){
+    const user = await authRepository.getUserById(userId)
+    return user
+}
+
 export async function getUser(email: string){
     const user = await authRepository.getUserByEmail(email)
     return user
 }
-
 
 export async function registerUser(userData: userDataType){
     const {password} = userData

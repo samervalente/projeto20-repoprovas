@@ -15,5 +15,5 @@ export async function loginUser(req: Request, res: Response){
     
     const token = await authService.loginUser(userId)
 
-    return res.status(200).send({sessionToken: token})
+    res.status(200).send({sessionToken: token})
 }

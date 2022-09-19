@@ -3,6 +3,18 @@ import testDataType from "../types/testType";
 
 
 export async function createTest(test: testDataType){
+    const {categoryId, teacherDisciplineId} = test
+    
+    const categorie = await testRepository.getCategoryById(categoryId)
+    if(!categorie){
+        throw {type:"not_found", message:"Categorie not found"}
+    }
+
+    const teacherDiscipline = await testRepository.getTeacherDisciplineById(teacherDisciplineId)
+    if(!teacherDiscipline){
+        throw {type:"not_found", message:"Teacher discipline not found"}
+    }
+
     return await testRepository.insertTest(test)
 }
 

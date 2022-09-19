@@ -1,22 +1,26 @@
 import jwt from "jsonwebtoken"
 import {Request, Response, NextFunction} from "express"
 import dotenv from "dotenv"
+import * as authService from "../services/authService"
 
 dotenv.config()
 
 export default async function validateToken(req: Request, res: Response, next: NextFunction){
     
-    const secret_key = String(process.env.SECRET_KEY)
-    const token: string | undefined = req.headers.authorization?.replace("Bearer ", "")
-    
-    if(!token || token.length !== 115 ){
-        throw {type: "unauthorized", message:"Invalid Token"}
+    const authorization = req.headers['authorization'];
+    if (!authorization) throw {type:"unauthorized", message:"Missing authorization header"}
+  
+    const token = authorization.replace('Bearer ', '');
+    if (!token) throw {type:"unauthorized", message:"Missing token"}
+  
+    try {
+      const JWT_SECRET = String(process.env.JWT_SECRET);
+      const { userId } = jwt.verify(token, JWT_SECRET) as { userId: number };
+      const user = await authService.getUserById(userId)
+      res.locals.user = user;
+      
+      next();
+    } catch {
+      throw {type:"unauthorized", message:"Invalid Token"}
     }
-   
-    const result: any = jwt.verify(String(token), secret_key)
- 
-
-    res.locals.userId = result.id
-
-    next()
 }

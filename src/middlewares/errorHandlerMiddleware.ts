@@ -16,6 +16,7 @@ export default function errorHandler(error: IError, req: Request, res: Response,
         case "invalid_body": return res.status(422).send(message)
     }
     
+    console.log(error)
     return res.status(500).send(error)
 }
 

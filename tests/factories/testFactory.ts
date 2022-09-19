@@ -1,10 +1,12 @@
 import {faker} from "@faker-js/faker"
 
-export default function testFactory(){
-    return {
-        name:faker.name ,
+export default async function testDataFactory(){
+    const test = {
+        name:faker.lorem.words(2),
         pdfUrl:faker.internet.url(),
-        categoryId: faker.random.numeric(),
-        teacherDisciplineId:faker.random.numeric()
+        categoryId: 2,
+        teacherDisciplineId:2
     }
+    
+    return test
 }

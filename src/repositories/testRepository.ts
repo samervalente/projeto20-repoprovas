@@ -5,6 +5,16 @@ export  async function insertTest(test: testDataType){
    return await client.test.create({data: test})
 }
 
+export async function getCategoryById(id: number){
+    const categorie = await client.categorie.findFirst({where:{id}})
+    return categorie
+}
+
+export async function getTeacherDisciplineById(id: number){
+    const teacherDiscipline = await client.teacherDiscipline.findFirst({where:{id}})
+    return teacherDiscipline
+}
+
 export async function getTests(){
     const terms = await client.term.findMany({select:{term:true, 
         disciplines:{select:{name:true}}}})

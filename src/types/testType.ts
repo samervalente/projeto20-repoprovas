@@ -1,4 +1,4 @@
 import { Test } from "@prisma/client";
 
-type testDataType = Omit<Test, "Id">
+type testDataType = Omit<Test, "id">
 export default testDataType
