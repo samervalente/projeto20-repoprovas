@@ -62,7 +62,7 @@ POST /tests (autenticada)
 
 ```yml
 GET /tests
-    - Rota para listar as provas agrupadas por disciplinas
+    - Rota para listar as provas agrupadas por disciplina
     - headers: { "Authorization": "Bearer $token" }
     - body: {}
 ``` 
